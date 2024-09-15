@@ -15,6 +15,7 @@ Sudoku::Sudoku(size_t n) {
 
     for(size_t i = 0; i < n; ++i) {
         grid.emplace_back(std::vector<size_t>(n, 0));
+        fixed.emplace_back(std::vector<bool>(n, false));
     }
 }
 
@@ -51,6 +52,94 @@ size_t Sudoku::duplicates_row(size_t i) {
     }
 
     return grid.size()-unique.size();
+}
+
+size_t Sudoku::total_cost() {
+    size_t cost = 0;
+    for(size_t i = 0; i < grid.size(); ++i) {
+        cost += duplicates_col(i);
+        cost += duplicates_row(i);
+    }
+
+    return cost;
+}
+
+void Sudoku::sa_optimization(size_t start_temp, size_t end_temp, size_t cooling_rate, size_t steps) {
+    make_fixed();
+    fill_randomly();
+
+    std::uniform_int_distribution<size_t> dist(1, grid.size());
+
+    size_t currEnergy = total_cost();
+    size_t T = start_temp;
+    
+    size_t i = 0;
+    while(i < steps || currEnergy == 0) {
+        
+        size_t sq_n = dist(gen);    
+
+        // newstate
+        std::pair<size_t, size_t> num1;
+        std::pair<size_t, size_t> num2;
+
+        size_t newEnergy;
+        
+        
+        //= total_cost();
+        if(newEnergy < currEnergy) {
+            currEnergy = newEnergy;
+        }
+        else {
+            //undo
+        }
+
+        T *= cooling_rate;
+
+        if(T <= end_temp) {
+            return ;
+        }
+
+        ++i;
+    }
+}
+
+void Sudoku::make_fixed() {
+    for(size_t i = 0; i < grid.size(); ++i) {
+        for(size_t j = 0; j < grid.size(); ++j) {
+            if(grid.at(i).at(j) != 0) {
+                fixed.at(i).at(j) = true;
+            }
+        }
+    }
+}
+
+void Sudoku::new_state_energy(size_t i) {
+    if(i < 0 || i >= grid.size()) {
+        throw std::logic_error("Wrong square");
+    }
+
+    size_t n = sqrt(grid.size());
+
+    for(size_t i = 0; i < n; ++i) {
+
+    }
+
+
+
+}
+
+void Sudoku::print_fixed() {
+    for(size_t i = 0; i < grid.size(); ++i) {
+        for(size_t j = 0; j < grid.size(); ++j) {
+            if(fixed.at(i).at(j)) {
+                std::cout << 1 << ' ';
+            }
+            else {
+                std::cout << 0 << ' ';
+            }
+        }
+        std::cout << '\n';
+    }
 }
 
 void Sudoku::fill_randomly() {
