@@ -3,21 +3,19 @@
 
 #include <iostream>
 
-template <size_t n>
 class Sudoku {
     std::vector<std::vector<size_t>> grid;
 
 public:
-    Sudoku(); 
+    Sudoku(size_t n);
 
-    // void set_position(size_t i, size_t j, size_t value) {
+    void set_position(size_t i, size_t j, size_t value);
+    size_t get_value(size_t i, size_t j);
 
-    // }
+    size_t duplicates_col(size_t i);
+    size_t duplicates_row(size_t i); 
 
-    // void get_value(size_t i, size_t j) {
-
-    // }
-
+    void print_sudoku();
 };
 
 
