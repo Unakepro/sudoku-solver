@@ -18,9 +18,11 @@ public:
     size_t duplicates_col(size_t i);
     size_t duplicates_row(size_t i); 
     size_t total_cost();
+
+    void sa_optimization(double start_temp, double end_temp, double cooling_rate, size_t steps);
+    auto new_state_energy(size_t sq_n);
     
-    void sa_optimization(size_t start_temp, size_t end_temp, size_t cooling_rate, size_t steps);
-    void new_state_energy(size_t i);
+    bool make_transition(long double P);
 
     void make_fixed();
     void print_fixed();

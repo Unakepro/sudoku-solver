@@ -64,33 +64,80 @@ size_t Sudoku::total_cost() {
     return cost;
 }
 
-void Sudoku::sa_optimization(size_t start_temp, size_t end_temp, size_t cooling_rate, size_t steps) {
+
+auto Sudoku::new_state_energy(size_t sq_n) {
+    if(sq_n < 0 || sq_n >= grid.size()) {
+        throw std::logic_error("Wrong square");
+    }
+
+    std::vector<std::pair<size_t, size_t>> not_fixed;
+    size_t n = sqrt(grid.size());
+    
+    for(size_t i = (sq_n / n) * n; i < (sq_n / n) * n + n; ++i) {
+        for(size_t j = (sq_n % n) * n; j < (sq_n % n) * n + n; ++j) {
+            size_t curr_num = grid.at(i).at(j);
+            if(fixed.at(i).at(j) == false) {
+                not_fixed.emplace_back(i, j);
+            }
+        }
+    }
+
+    std::uniform_int_distribution<size_t> dist(0, not_fixed.size()-1);
+    std::pair<int, int> rand_nums{-1, -1};
+    
+    if(not_fixed.size() <= 1) {
+        return std::tuple<std::pair<size_t, size_t>, std::pair<size_t, size_t>, size_t>{std::pair<size_t, size_t>{0, 0}, std::pair<size_t, size_t>{0, 0}, total_cost()};
+    }
+    
+    while(rand_nums.first == -1 || rand_nums.second == -1) {
+        if(rand_nums.first == -1) {
+            rand_nums.first = dist(gen);
+        }
+        else {
+            size_t rand_n = dist(gen);
+            if(rand_nums.first != rand_n) {
+                rand_nums.second = rand_n;
+                break;
+            }
+        }
+    }   
+
+    std::swap(grid.at(not_fixed[rand_nums.first].first).at(not_fixed[rand_nums.first].second), grid.at(not_fixed[rand_nums.second].first).at(not_fixed[rand_nums.second].second));
+
+    return std::tuple<std::pair<size_t, size_t>, std::pair<size_t, size_t>, size_t>{not_fixed.at(rand_nums.first), not_fixed.at(rand_nums.second), total_cost()};
+}
+
+void Sudoku::sa_optimization(double start_temp, double end_temp, double cooling_rate, size_t steps) {
     make_fixed();
     fill_randomly();
 
-    std::uniform_int_distribution<size_t> dist(1, grid.size());
+    std::uniform_int_distribution<size_t> dist(0, grid.size()-1);
 
     size_t currEnergy = total_cost();
-    size_t T = start_temp;
+    double T = start_temp;
     
     size_t i = 0;
-    while(i < steps || currEnergy == 0) {
-        
-        size_t sq_n = dist(gen);    
+    while(i < steps || currEnergy != 0) {
 
-        // newstate
         std::pair<size_t, size_t> num1;
         std::pair<size_t, size_t> num2;
 
-        size_t newEnergy;
+        size_t newEnergy = 0;
         
-        
-        //= total_cost();
+        auto new_state = new_state_energy(dist(gen));
+        newEnergy = std::get<2>(new_state);
+
         if(newEnergy < currEnergy) {
             currEnergy = newEnergy;
         }
         else {
-            //undo
+           //std::cout << ' ' << T << ' ' << exp(-((newEnergy-currEnergy)/T)) << std::endl;
+            if(make_transition(exp(-((newEnergy-currEnergy)/T)))) {
+               currEnergy = newEnergy;
+            }
+            else {
+               std::swap(grid.at(std::get<0>(new_state).first).at(std::get<0>(new_state).second), grid.at(std::get<1>(new_state).first).at(std::get<1>(new_state).second));
+            }
         }
 
         T *= cooling_rate;
@@ -103,6 +150,16 @@ void Sudoku::sa_optimization(size_t start_temp, size_t end_temp, size_t cooling_
     }
 }
 
+bool Sudoku::make_transition(long double P) {
+    //std::cout << P << ' ';
+    std::uniform_real_distribution<> dis(0.0, 1.0);
+    if(P >= dis(gen)) {
+        return true;
+    }
+
+    return false;
+}
+
 void Sudoku::make_fixed() {
     for(size_t i = 0; i < grid.size(); ++i) {
         for(size_t j = 0; j < grid.size(); ++j) {
@@ -113,20 +170,7 @@ void Sudoku::make_fixed() {
     }
 }
 
-void Sudoku::new_state_energy(size_t i) {
-    if(i < 0 || i >= grid.size()) {
-        throw std::logic_error("Wrong square");
-    }
 
-    size_t n = sqrt(grid.size());
-
-    for(size_t i = 0; i < n; ++i) {
-
-    }
-
-
-
-}
 
 void Sudoku::print_fixed() {
     for(size_t i = 0; i < grid.size(); ++i) {
