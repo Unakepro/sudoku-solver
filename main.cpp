@@ -24,8 +24,12 @@ int main() {
     xs.set_row(7, std::move(row8));
     xs.set_row(8, std::move(row9));
 
-    xs.sa_optimization(100, 0.01, 0.99, 100000);
-    std::cout << xs.total_cost();
+    std::cout << "Sudoku before optimization:  " << std::endl;
     xs.print_sudoku();
+    std::cout << "Total number of duplicates are: " << xs.total_cost() << std::endl;
 
+    std::cout << "Sudoku after optimization:  " << std::endl;
+    xs.sa_optimization(100, 0.01, 0.99, 100000);
+    xs.print_sudoku();
+    std::cout << "Total number of duplicates are: " << xs.total_cost() << std::endl;
 }
