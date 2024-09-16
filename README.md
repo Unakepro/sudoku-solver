@@ -64,19 +64,10 @@ Explanation:
 
 1. We start by measuring the current energy of the system and setting the initial temperature.
 2. We iterate while i < steps or until the energy reaches 0 (for Sudoku, energy == 0 means no duplicates, is solved).
-
----
-**NOTE**
-
-It's okay for sudoku, cause 0 energy in this case means, there is no duplication, so Sudoku is solved, but in other problems, you may not terminate like this, cause for TCP you want simply to optimize without  stopping at some number.
-
----
-
-
 3. In each iteration, we select a new state (for Sudoku, we select the random region and swap two values that which was not set at start.).
 4. We calculate the new energy. If it's lower than the current energy, we accept the new state. If not, we compute a probability using the formula e^(-((newEnergy-currEnergy)/T).
 5. To decide if we accept a worse option, we use the **make_transition** function, which compares this probability with a randomly generated number between 0 and 1. If the probability is higher, we accept the worse option.
-6. Decrease temperature. 
+6. Decrease the temperature. 
 ​
 ---
 **NOTE**
