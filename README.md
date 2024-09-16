@@ -63,8 +63,8 @@ void SA(double start_temp, double end_temp, double cooling_rate, size_t steps) {
 Explanation:
 
 1. We start by measuring the current energy of the system and setting the initial temperature.
-2. We iterate while i < steps or until the energy reaches 0 (for Sudoku, energy == 0 means no duplicates, is solved).
-3. In each iteration, we select a new state (for Sudoku, we select the random region and swap two values that which was not set at start.).
+2. We iterate while i < steps or until the energy reaches 0 (for Sudoku, energy == 0 means no duplicates, so it's solved).
+3. In each iteration, we select a new state (for Sudoku, we select the random region and swap two values that which was not fixed at start).
 4. We calculate the new energy. If it's lower than the current energy, we accept the new state. If not, we compute a probability using the formula e^(-((newEnergy-currEnergy)/T).
 5. To decide if we accept a worse option, we use the **make_transition** function, which compares this probability with a randomly generated number between 0 and 1. If the probability is higher, we accept the worse option.
 6. Decrease the temperature. 
@@ -72,7 +72,7 @@ Explanation:
 ---
 **NOTE**
  
-I'm talking about minimizing, because it is what we want to do in Sudoku or in TCP, we want to minimize duplicates and a sum of distances corresponding. In another task maybe you want to maximize your energy.
+I'm talking about minimizing, because it is what we want to do in Sudoku or in TCP, we want to minimize duplicates and a sum of distances respectively. In another task you may want to maximize your energy.
 
 ---
 
