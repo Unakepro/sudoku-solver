@@ -72,7 +72,7 @@ Explanation:
 ---
 **NOTE**
  
-I'm talking about minimizing, because it is what we want to do in Sudoku or in TCP, we want to minimize duplicates and a sum of distances respectively. In another task you may want to maximize your energy.
+I'm talking about minimizing, because it is what we want to do in Sudoku or in TSP, we want to minimize duplicates and a sum of distances respectively. In another task you may want to maximize your energy.
 
 ---
 
