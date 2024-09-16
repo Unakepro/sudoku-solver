@@ -63,15 +63,13 @@ void SA(double start_temp, double end_temp, double cooling_rate, size_t steps) {
 Explanation:
 
 1. We start by measuring the current energy of the system and setting the initial temperature.
-2. We iterate while i < steps or until the energy reaches 0 (for Sudoku, energy = 0 means no duplicates, is solved).
+2. We iterate while i < steps or until the energy reaches 0 (for Sudoku, energy == 0 means no duplicates, is solved).
 
 ---
 **NOTE**
 
-it's okay for sudoku, cause 0 energy in this case means, there is no duplication, so Sudoku is solved, but in other problems, you may not use it, cause for TCP you want simply to optimize without 
-stopping at some number.
+It's okay for sudoku, cause 0 energy in this case means, there is no duplication, so Sudoku is solved, but in other problems, you may not terminate like this, cause for TCP you want simply to optimize without  stopping at some number.
 
----
 
 
 
