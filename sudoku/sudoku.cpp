@@ -117,7 +117,7 @@ void Sudoku::sa_optimization(double start_temp, double end_temp, double cooling_
     double T = start_temp;
     
     size_t i = 0;
-    while(i < steps || currEnergy != 0) {
+    while(i < steps && currEnergy != 0) {
 
         std::pair<size_t, size_t> num1;
         std::pair<size_t, size_t> num2;
@@ -131,7 +131,6 @@ void Sudoku::sa_optimization(double start_temp, double end_temp, double cooling_
             currEnergy = newEnergy;
         }
         else {
-           //std::cout << ' ' << T << ' ' << exp(-((newEnergy-currEnergy)/T)) << std::endl;
             if(make_transition(exp(-((newEnergy-currEnergy)/T)))) {
                currEnergy = newEnergy;
             }
@@ -140,7 +139,7 @@ void Sudoku::sa_optimization(double start_temp, double end_temp, double cooling_
             }
         }
 
-        T *= cooling_rate;
+        T = start_temp / (1 + cooling_rate * i); 
 
         if(T <= end_temp) {
             return ;
@@ -151,7 +150,6 @@ void Sudoku::sa_optimization(double start_temp, double end_temp, double cooling_
 }
 
 bool Sudoku::make_transition(long double P) {
-    //std::cout << P << ' ';
     std::uniform_real_distribution<> dis(0.0, 1.0);
     if(P >= dis(gen)) {
         return true;

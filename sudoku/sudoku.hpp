@@ -5,7 +5,7 @@
 
 class Sudoku {
     std::vector<std::vector<size_t>> grid;
-    std::vector<std::vector<bool>> fixed;
+    std::vector<std::vector<bool> > fixed;
 
 public:
     Sudoku(size_t n);
