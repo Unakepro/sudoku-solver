@@ -127,3 +127,9 @@ g++ -std=c++17 main.cpp sudoku/sudoku.cpp
 ## Demonstration
 
 
+https://github.com/user-attachments/assets/5c157915-b4ac-4489-aa07-839f2fb74f52
+
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
