@@ -70,7 +70,7 @@ Explanation:
 
 It's okay for sudoku, cause 0 energy in this case means, there is no duplication, so Sudoku is solved, but in other problems, you may not terminate like this, cause for TCP you want simply to optimize without  stopping at some number.
 
-
+---
 
 
 3. In each iteration, we select a new state (for Sudoku, we select the random region and swap two values that which was not set at start.).
