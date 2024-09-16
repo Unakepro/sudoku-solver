@@ -120,7 +120,8 @@ The values for `start_temp`, `end_temp`, and `cooling_rate` depend on the specif
 
 ### Steps
 
-`steps` is used to limit the number of iterations the algorithm will run. For Sudoku, setting `steps` to around **100,000** should provide a balance between solution accuracy and computation time.
+`steps` is used to limit the number of iterations the algorithm will run. For Sudoku, setting `steps` to around **100,000** will prevent the algorithm from running for too long, ensuring a reasonable computation time.
+
 
 
 
