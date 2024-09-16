@@ -87,6 +87,8 @@ I'm talking about minimizing, because it is what we want to do in Sudoku or in T
 
 ---
 
+
+
 ## Why we even take worse options somethimes?
 
 Sometimes, accepting worse options allows us to escape local minima. If we only move downhill (as in gradient descent),
@@ -97,6 +99,7 @@ we may get stuck in a local minimum and miss the global minimum.
 In the picture above we can see the function, and we want to get to the global minimum, but if we go simply down, using gradient descent,
 we would go straight to the local minimum and get stuck in it, in order to go through it, we need to go explore uphill, but gradient descent won't allow us to go against minimizing.
 So SA sometimes takes worse direction to find a better one later.
+
 
 
 ## Configuration
@@ -114,9 +117,12 @@ The values for `start_temp`, `end_temp`, and `cooling_rate` depend on the specif
 - **end_temp**: 0.01
 - **cooling_rate**: A value between **0.99** and **0.999** works best.
 
+
 ### Steps
 
 `steps` is used to limit the number of iterations the algorithm will run. For Sudoku, setting `steps` to around **100,000** should provide a balance between solution accuracy and computation time.
+
+
 
 
 ## Run
