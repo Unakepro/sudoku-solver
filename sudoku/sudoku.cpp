@@ -14,16 +14,16 @@ Sudoku::Sudoku(size_t n) {
     } 
 
     for(size_t i = 0; i < n; ++i) {
-        grid.emplace_back(std::vector<size_t>(n, 0));
+        grid.emplace_back(std::vector<int16_t>(n, 0));
         fixed.emplace_back(std::vector<bool>(n, false));
     }
 }
 
-void Sudoku::set_position(size_t i, size_t j, size_t value) {
+void Sudoku::set_position(size_t i, size_t j, int16_t value) {
     grid.at(i).at(j) = value;
 }
 
-void Sudoku::set_row(size_t i, std::vector<size_t>&& row) {
+void Sudoku::set_row(size_t i, std::vector<int16_t>&& row) {
     if(row.size() != grid.size()) {
         throw std::logic_error("Wrong row size!");
     }
@@ -31,7 +31,7 @@ void Sudoku::set_row(size_t i, std::vector<size_t>&& row) {
     grid.at(i) = std::move(row);
 }
 
-size_t Sudoku::get_value(size_t i, size_t j) {
+int16_t Sudoku::get_value(size_t i, size_t j) {
     return grid.at(i).at(j);
 }
 
