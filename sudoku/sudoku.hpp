@@ -12,11 +12,17 @@ public:
 
     void set_position(size_t i, size_t j, int16_t value);
     void set_row(size_t i, std::vector<int16_t>&& value);
+    void get_sudoku(const std::string& filename);
 
     int16_t get_value(size_t i, size_t j);
 
     size_t duplicates_col(size_t i);
     size_t duplicates_row(size_t i); 
+
+    bool hasRowDuplicates();
+    bool hasColDuplicates();
+    bool hasTableDuplicates();
+
     size_t total_cost();
 
     void sa_optimization(double start_temp, double end_temp, double cooling_rate, size_t steps);

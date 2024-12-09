@@ -2,6 +2,8 @@
 #include <cmath>
 #include <unordered_set>
 #include <random>
+#include <fstream>
+#include <sstream>
 #include "sudoku.hpp"
 
 std::random_device rd;
@@ -31,6 +33,41 @@ void Sudoku::set_row(size_t i, std::vector<int16_t>&& row) {
     grid.at(i) = std::move(row);
 }
 
+
+void Sudoku::get_sudoku(const std::string& filename) {
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        throw std::logic_error("File not found");
+    }
+
+    std::string line;
+    size_t row = 0;
+
+    while (std::getline(file, line) && row < grid.size()) {
+        std::stringstream ss(line);
+        size_t col = 0;
+        int16_t number;
+        
+        while (ss >> number && col < grid.size()) {
+            grid.at(row).at(col) = number;
+            ++col;
+        }
+        ++row;
+    }
+
+    file.close();
+
+    if(hasRowDuplicates()) {
+        throw std::logic_error("Wrong Sudoku, has duplicates in rows");
+    }
+    if(hasColDuplicates()) {
+        throw std::logic_error("Wrong Sudoku, has duplicates in cols");
+    }
+    if(hasTableDuplicates()) {
+       throw std::logic_error("Wrong Sudoku, has duplicates in tables");
+    }
+}
+
 int16_t Sudoku::get_value(size_t i, size_t j) {
     return grid.at(i).at(j);
 }
@@ -53,6 +90,75 @@ size_t Sudoku::duplicates_row(size_t i) {
 
     return grid.size()-unique.size();
 }
+
+bool Sudoku::hasRowDuplicates() {
+    std::vector<int16_t> row(10, 0);
+    for(size_t i = 0; i < grid.size(); ++i) {
+        for(size_t j = 0; j < grid[i].size(); ++j) {
+            if(grid.at(i).at(j) != 0) {
+                row[grid[i][j]] += 1;
+            }
+        }
+
+        for(size_t j = 0; j < row.size(); ++j) {
+            if(row[j] > 1) {
+                return true;
+            }
+        }
+        std::fill(row.begin(), row.end(), 0);
+    }
+
+    return false;
+}
+
+bool Sudoku::hasColDuplicates() {
+    std::vector<int16_t> col(10, 0);
+    for(size_t i = 0; i < grid.size(); ++i) {
+        for(size_t j = 0; j < grid[i].size(); ++j) {
+            if(grid.at(j).at(i) != 0) {
+                col[grid[j][i]] += 1;
+            }
+        }
+
+        for(size_t j = 0; j < col.size(); ++j) {
+            if(col[j] > 1) {
+                return true;
+            }
+        }
+        std::fill(col.begin(), col.end(), 0);
+    }
+
+    return false;
+}
+
+
+bool Sudoku::hasTableDuplicates() {
+    std::vector<int16_t> table(10, 0);
+    size_t n_table = std::sqrt(grid.size());
+    
+
+    for(size_t i = 0; i < grid.size(); ++i) {
+        for(size_t j = 0; j < grid.size();  ++j) {
+            
+            int ind1 = ((i % n_table) * 3) + (j % n_table);
+            int ind2 = ((i / n_table) * 3) + (j / n_table);
+
+            if(grid.at(ind1).at(ind2) != 0) {
+                table[grid[ind1][ind2]] += 1;
+            }
+        }
+
+        for(size_t j = 0; j < table.size(); ++j) {
+            if(table[j] > 1) {
+                return true;
+            }
+        }
+        std::fill(table.begin(), table.end(), 0);
+    }
+
+    return false;
+}
+
 
 size_t Sudoku::total_cost() {
     size_t cost = 0;
